@@ -18,12 +18,15 @@ const 大儿子 = () => <section>大儿子<User/></section>
 const 二儿子 = () => <section>二儿子<UserModifier/></section>
 const 三儿子 = () => <section>三儿子</section>
 const User = () => {
-  const contextValue = useContext(appContext)
-  return <div>User:{contextValue.appState.user.name}</div>
+  const {appState} = useContext(appContext)
+  return <div>User:{appState.user.name}</div>
 }
+
 const UserModifier = () => {
   const {appState, setAppState} = useContext(appContext)
   const onChange = (e) => {
+    appState.user.name = e.target.value
+    setAppState({...appState})
   }
   return <div>
     <input value={appState.user.name}
