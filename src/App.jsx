@@ -1,43 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
-
-const connect = (Component) => {
-  return (props) => {
-    const {state, setState} = useContext(appContext)
-    const [, update] = useState({})
-
-    useEffect(() => {
-      store.subscribe(() => {
-        update({})
-      })
-    }, [])
-
-    const dispatch = (action) => {
-      setState(reducer(state, action))
-    }
-
-    return <Component {...props} dispatch={dispatch} state={state}/>
-  }
-}
-
-const appContext = React.createContext(null)
-
-const store = {
-  state: {
-    user: {name: 'lemon', age: 18}
-  },
-  setState(newState) {
-    store.state = newState
-    store.listeners.map(fn => fn())
-  },
-  listeners: [],
-  subscribe(fn) {
-    store.listeners.push(fn)
-    return () => {
-      const index = store.listeners.indexOf(fn)
-      store.listeners.split(index, 1)
-    }
-  }
-}
+import React, {useContext} from 'react'
+import {appContext, connect, store} from './redux'
 
 export default () => {
   return (
@@ -65,20 +27,6 @@ const User = connect(() => {
   const {state} = useContext(appContext)
   return <div>User:{state.user.name}</div>
 })
-
-const reducer = (state, {type, payload}) => {
-  if (type === 'updateUser') {
-    return {
-      ...state,
-      user: {
-        ...state.user,
-        ...payload
-      }
-    }
-  } else {
-    return state
-  }
-}
 
 const UserModifier = connect(({dispatch, state}) => {
   console.log('UserModifier执行了 ' + Math.random())
