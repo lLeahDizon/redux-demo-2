@@ -22,7 +22,9 @@ const 三儿子 = connect(state => {
   return {group: state.group}
 })(({group}) => {
   console.log('三儿子执行了 ' + Math.random())
-  return <section>三儿子<div>Group:{group.name}</div></section>
+  return <section>三儿子
+    <div>Group:{group.name}</div>
+  </section>
 })
 const User = connect(state => {
   return {user: state.user}
@@ -31,13 +33,14 @@ const User = connect(state => {
   return <div>User:{user.name}</div>
 })
 
-const UserModifier = connect()(({dispatch, state}) => {
+const UserModifier = connect(null, (dispatch) => {
+  return {
+    updateUser: (attrs) => dispatch({type: 'updateUser', payload: attrs})
+  }
+})(({updateUser, state}) => {
   console.log('UserModifier执行了 ' + Math.random())
   const onChange = (e) => {
-    dispatch({
-      type: 'updateUser',
-      payload: {name: e.target.value}
-    })
+    updateUser({name: e.target.value})
   }
   return <div>
     <input value={state.user.name}
