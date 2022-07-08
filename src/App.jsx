@@ -22,13 +22,14 @@ const 三儿子 = () => {
   console.log('三儿子执行了 ' + Math.random())
   return <section>三儿子</section>
 }
-const User = connect(() => {
+const User = connect(state => {
+  return {user: state.user}
+})(({user}) => {
   console.log('User执行了 ' + Math.random())
-  const {state} = useContext(appContext)
-  return <div>User:{state.user.name}</div>
+  return <div>User:{user.name}</div>
 })
 
-const UserModifier = connect(({dispatch, state}) => {
+const UserModifier = connect()(({dispatch, state}) => {
   console.log('UserModifier执行了 ' + Math.random())
   const onChange = (e) => {
     dispatch({
