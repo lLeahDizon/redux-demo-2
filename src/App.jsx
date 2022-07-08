@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {appContext, connect, store} from './redux'
 
 export default () => {
@@ -18,10 +18,12 @@ const 二儿子 = () => {
   console.log('二儿子执行了 ' + Math.random())
   return <section>二儿子<UserModifier/></section>
 }
-const 三儿子 = () => {
+const 三儿子 = connect(state => {
+  return {group: state.group}
+})(({group}) => {
   console.log('三儿子执行了 ' + Math.random())
-  return <section>三儿子</section>
-}
+  return <section>三儿子<div>Group:{group.name}</div></section>
+})
 const User = connect(state => {
   return {user: state.user}
 })(({user}) => {
