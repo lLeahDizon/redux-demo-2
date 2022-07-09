@@ -23,7 +23,7 @@ export const createStore = (reducer, initState) => {
   return store
 }
 
-export const appContext = React.createContext(null)
+const appContext = React.createContext(null)
 
 const changed = (oldState, newState) => {
   for (const key in oldState) {
@@ -56,4 +56,12 @@ export const connect = (selector, dispatchSelector) => (Component) => {
 
     return <Component {...props} {...data} {...dispatchers}/>
   }
+}
+
+export const Provider = ({store,children}) => {
+  return (
+    <appContext.Provider value={store}>
+      {children}
+    </appContext.Provider>
+  )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {appContext, connect, createStore} from './redux'
+import {connect, createStore, Provider} from './redux'
 import {userConnect} from './connecters/connectToUser'
 
 const initState = {
@@ -25,11 +25,11 @@ const store = createStore(reducer, initState)
 
 export default () => {
   return (
-    <appContext.Provider value={store}>
+    <Provider store={store}>
       <大儿子/>
       <二儿子/>
       <三儿子/>
-    </appContext.Provider>
+    </Provider>
   )
 }
 const 大儿子 = () => {
