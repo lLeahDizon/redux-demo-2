@@ -1,10 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react'
 
-export const store = {
-  state: {
-    user: {name: 'lemon', age: 18},
-    group: {name: 'fe'}
-  },
+const store = {
+  state: undefined,
+  reducer: undefined,
   setState(newState) {
     store.state = newState
     store.listeners.map(fn => fn())
@@ -19,21 +17,13 @@ export const store = {
   }
 }
 
-export const appContext = React.createContext(null)
-
-const reducer = (state, {type, payload}) => {
-  if (type === 'updateUser') {
-    return {
-      ...state,
-      user: {
-        ...state.user,
-        ...payload
-      }
-    }
-  } else {
-    return state
-  }
+export const createStore = (reducer, initState) => {
+  store.state = initState
+  store.reducer = reducer
+  return store
 }
+
+export const appContext = React.createContext(null)
 
 const changed = (oldState, newState) => {
   for (const key in oldState) {
@@ -49,7 +39,7 @@ export const connect = (selector, dispatchSelector) => (Component) => {
     const {state, setState} = useContext(appContext)
 
     const dispatch = (action) => {
-      setState(reducer(state, action))
+      setState(store.reducer(state, action))
     }
 
     const [, update] = useState({})
